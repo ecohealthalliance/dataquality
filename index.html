@@ -153,14 +153,13 @@ outliersUV(x = exdata1$Forearm_length_mm)
 
 ---
 
+background-image: url()
+background-color: #FFFFFF
+
 ## Outlier detection - extending the `boxplot()` approach
 
 And produces the following output
 
-
-```r
-outliersUV(x = exdata1$Forearm_length_mm)
-```
 
 ```
 ## 
@@ -465,7 +464,11 @@ class: center, middle
 
 ```r
 set.seed(0)
-finalDigits &lt;- sample(x = 0:9, size = 1000, replace = TRUE)
+finalDigits &lt;- sample(
+  x = 0:9, 
+  size = 1000, 
+  replace = TRUE
+)
 ```
 
 * Examine `finalDigits` as a table
