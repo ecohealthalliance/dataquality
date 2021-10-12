@@ -1,0 +1,494 @@
+---
+title: "Assessing and ensuring data quality of measurements"
+#subtitle: "A discussion and demonstration of tests and methods"  
+author: "Ernest Guevarra"
+date: '12 October 2021'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      titleSlideClass: ["right", "bottom"]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+## load libraries
+library(magrittr)
+library(dplyr)
+library(tibble)
+library(nipnTK)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(
+  #base_color = "#509935",
+  base_color = "#000000",
+  base_font_size = "22px",
+  title_slide_background_color = "#FFFFFF",
+  title_slide_background_image = "images/ecohealth_title_background_4by3.png",
+  title_slide_background_size = "contain",
+  #title_slide_text_color = "#509935",
+  title_slide_text_color = "#000000",
+  background_image = "images/ecohealth_slide_background_4by3.png",
+  header_font_google = google_font("Fira Sans"),
+  text_font_google = google_font("Fira Sans Condensed"),
+  code_font_google = google_font("Fira Mono"),
+  code_font_size = "0.7rem",
+  text_slide_number_font_size = "1em",
+  link_color = "#509935"
+)
+```
+
+## Outline
+
+* Introduction
+
+* Common data quality issues related to measurements
+
+* Assessing/detecting quality issues with measurement data
+
+* Minimising quality issues with measurement data
+
+---
+
+## Introduction
+
+* Collecting measurement data is an important component of most EHA studies
+
+* Ensuring quality of measurement data is critical
+
+* There are many factors that impact on quality of measurement data
+
+* Detecting and/or minimising possible issues with measurement data can help with improving data quality
+
+---
+
+## Common reasons/factors that give rise to issues with measurement data
+
+* Errors in taking measurements (technique/method issues)
+
+* Errors in reading measurements (e.g., ruler-based measurements)
+
+* Errors in recording measurements and/or errors in encoding measurements
+
+---
+
+## Outlier detection
+
+* Compare against a range of possible/plausible measurement values
+
+* Extending the *boxplot* approach (univariate approach)
+
+* Using scatterplot and statistical distance (bivariate approach)
+
+---
+
+## Outlier detection examples/demonstration
+
+* For this, we will be using a dataset on bat forearm length available from:
+
+> Penone, C., Kerbiriou, C., Julien, J. F., Marmet, J., & Le Viol, I. (2018). Body size information in large-scale acoustic bat databases. PeerJ, 6, e5370. https://doi.org/10.7717/peerj.5370
+
+* We retrieve the data as follows:
+
+```{r exdata1, echo = TRUE}
+exdata1 <- read.csv("data/peerj-06-5370-s003.csv", sep = ";") %>% 
+  tibble() %>%
+  select(Locality_id, Year, Sex, Age, Forearm_length_mm)
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - example dataset
+
+* And the dataset looks as follows:
+
+```{r exdata1_tab, echo = TRUE}
+exdata1
+```
+
+---
+
+## Outlier detection - checking ranges using `boxplot()`
+
+.pull-left[
+```{r exdata1_boxplot1, echo = TRUE, eval = FALSE, fig.align = "center"}
+boxplot(
+  exdata1$Forearm_length_mm,
+  horizontal = TRUE,
+  xlab = "Forearm length (mm)", 
+  frame.plot = FALSE
+)
+```
+]
+
+.pull-right[
+```{r exdata1_boxplot2, echo = FALSE, eval = TRUE, fig.align = "center"}
+boxplot(
+  exdata1$Forearm_length_mm,
+  horizontal = TRUE,
+  xlab = "Forearm length (mm)", 
+  frame.plot = FALSE
+)
+```
+]
+
+---
+
+## Outlier detection - extending the `boxplot()` approach
+
+* We can extend the `boxplot()` approach to checking range using some functions from the `{nipnTK}` package (see [https://nutriverse.io/nipnTK](https://nutriverse.io/nipnTK))
+
+```{r nipnTK_install, echo = TRUE, eval = FALSE}
+install.packages("nipnTK")
+```
+
+* `{nipnTK}` has a function called `outliersUV()` which builds on the techniques used when creating **boxplots**. The function can be used as follows:
+
+```{r, echo = TRUE, eval = FALSE}
+outliersUV(x = exdata1$Forearm_length_mm)
+```
+
+---
+
+## Outlier detection - extending the `boxplot()` approach
+
+And produces the following output
+
+```{r, echo = TRUE, eval = TRUE}
+outliersUV(x = exdata1$Forearm_length_mm)
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - extending the `boxplot()` approach
+
+This output can be used to identify the outlier rows of data as follows:
+
+```{r, echo = TRUE, eval = TRUE}
+exdata1[outliersUV(x = exdata1$Forearm_length_mm), ]
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - extending the `boxplot()` approach
+
+The `outliersUV()` function also allows for adjustments to the "fence" used in the `boxplot()` function to either make the detection of outliers more strict (narrower fence, less than 1.5 times the IQR) or more lax (wider fence more than 1.5 times the IQR). This can be done as follows:
+
+```{r, echo = TRUE, eval = TRUE}
+exdata1[outliersUV(x = exdata1$Forearm_length_mm, fence = 3), ]
+```
+
+---
+
+## Outlier detection - scatterplot and statistical distance
+
+* For this, we will be using bat morphological dataset taken from:
+
+> Zakaria, N., Tarmizi, A. A., Zuki, M., Ahmad, A. B., Mamat, M. A., & Abdullah, M. T. (2020). Bats data from fragmented forests in Terengganu State, Malaysia. Data in brief, 30, 105567. https://doi.org/10.1016/j.dib.2020.105567
+
+* We retrieve the data as follows:
+
+```{r exdata2, echo = TRUE}
+exdata2 <- read.csv("data/bats_malaysia.csv") %>% 
+  tibble()
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - scatterplot and statistical distance
+
+* And the dataset looks as follows:
+
+```{r, echo = TRUE}
+exdata2
+```
+
+---
+
+## Outlier detection - scatterplot
+
+.pull-left[
+```{r, echo = TRUE, eval = FALSE}
+exdata2_hipposideros <- exdata2 %>%
+  filter(stringr::str_detect(
+    string = exdata2$species, 
+    pattern = "Hipposideros"))
+
+with(exdata2_hipposideros, 
+  plot(total_length, weight)
+)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE, eval = TRUE}
+exdata2_hipposideros <- exdata2 %>%
+  filter(stringr::str_detect(
+    string = exdata2$species, 
+    pattern = "Hipposideros"))
+
+with(exdata2_hipposideros, 
+  plot(total_length, weight)
+)
+```
+]
+
+---
+
+## Outlier detection - statistical distance
+
+```{r, echo = TRUE}
+exdata2_hipposideros %>%
+  filter(outliersMD(total_length, weight))
+```
+
+---
+
+## Outlier detection - statistical distance
+
+.pull-left[
+```{r, echo = TRUE, eval = FALSE}
+with(exdata2_hipposideros,
+  plot(
+    x = total_length, 
+    y = weight,
+    pch = ifelse(
+      outliersMD(
+        total_length, 
+        weight), 19, 1)
+  )
+)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE, eval = TRUE}
+with(exdata2_hipposideros,
+  plot(
+    x = total_length, 
+    y = weight,
+    pch = ifelse(outliersMD(total_length, weight), 19, 1)
+  )
+)
+```
+]
+
+---
+
+## Outlier detection - statistical distance
+
+* The `outliersMD()` function has an argument called **alpha** which is set to 0.001 by default
+
+* With `alpha = 0.001` we are looking for records with values so extreme that we would expect to find them with a probability of 0.001 when there are no problems with the data
+
+* Another way of looking at the **alpha** parameter is that it alters the sensitivity of the `outlierMD()` function for detecting outliers by altering the threshold distance that is used to define outliers.
+
+* Larger values of **alpha** will tend to detect more potential outliers
+
+---
+
+class: center, middle
+
+# Questsions so far?
+
+---
+
+## Digit preference
+
+* observation that the final number in a measurement occurs with a greater frequency than is expected by chance
+
+* can occur because of rounding, the practice of increasing or decreasing the value in a measurement to the nearest whole of half unit, or because data is made up
+
+* common for field staff to round the first value after the decimal point to **0** or **5** or measurements in whole numbers are rounded to the nearest decade or half-decade
+
+* fictitious data often shows digit preference with **2** and **6** appearing as final digits more frequently than expected
+
+---
+
+## Digit preference - simulated example
+
+.pull-left[
+* We simulate a dataset of finalDigits of a measurement as follows:
+
+```{r, echo = TRUE}
+set.seed(0)
+finalDigits <- sample(x = 0:9, size = 1000, replace = TRUE)
+```
+
+* Examine `finalDigits` as a table
+
+```{r, echo = TRUE}
+table(finalDigits)
+```
+]
+
+.pull-right[
+* Examine `finalDigits` graphically
+
+```{r, echo = FALSE}
+barplot(table(finalDigits), xlab = "Final digit", ylab = "Frequency")
+abline(h = sum(table(finalDigits)) / 10, lty = 3)
+```
+]
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Digit preference - statistical testing
+
+```{r echo = TRUE}
+chisq.test(table(finalDigits))
+```
+
+* No significant difference in the frequency of the last digits of the measurements
+
+* *False-positives* and *false-negatives* can arise when doing this statistical testing approach to detect digit preference. A small number of observations can lead to *false-negatives* while a large number of observations can lead to *false-positives*
+
+* This can be addressed using the **Digit Preference Score** or **DPS** and can be applied using the `digitPreference()` function in the `{nipnTK}` package
+
+---
+
+## Digit preference - digit preference score
+
+* Applying the `digitPreference()` function to the first example data on forearm length, we get:
+
+```{r, echo = TRUE}
+digitPreference(x = exdata1$Forearm_length_mm)
+```
+
+---
+
+## Digit preference - digit preference score
+
+The **DPS** can also be plotted:
+
+.pull-left[
+```{r, echo = TRUE, eval = FALSE}
+plot(
+  digitPreference(
+    x = exdata1$Forearm_length_mm
+  )
+)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE, eval = TRUE}
+plot(
+  digitPreference(
+    x = exdata1$Forearm_length_mm
+  )
+)
+```
+]
+
+---
+
+## Digit preference - digit preference score
+
+* Applying the `digitPreference()` function to the second example dataset on total length, we get:
+
+```{r, echo = TRUE}
+digitPreference(x = exdata2$total_length, digits = 0)
+```
+
+---
+
+## Digit preference - digit preference score
+
+* The **DPS** can also be plotted:
+
+.pull-left[
+```{r, echo = TRUE, eval = FALSE}
+plot(
+  digitPreference(
+    x = exdata2$total_length, 
+    digits = 0
+  )
+)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE, eval = TRUE}
+plot(digitPreference(x = exdata2$total_length, digits = 0))
+```
+]
+
+---
+
+class: center, middle
+
+# Questsions so far?
+
+---
+
+## Assessing measurers performance during training
+
+* Having measurers undergo standardisation exercises is common practice in health and nutrition sector
+
+* Measurers perform measurements on a minimum of 10 subjects twice and their measurements are assessed for *accuracy* and *precision*
+
+---
+
+## Assessing measurers performance - accuracy and precision
+
+* *Accuracy* is calculated against a gold standard which is either the measurements made by an expert or the mean of the measurements made by the entire cohort/group of measuerers being trained
+
+* *Precision* is calculated using the inter-observer technical error of measurement (TEM) metric proposed by Ulijaszek and Kerr in: 
+
+> Ulijaszek, S., & Kerr, D. (1999). Anthropometric measurement error and the assessment of nutritional status. British Journal of Nutrition, 82(3), 165-177. doi:10.1017/S0007114599001348
+
+* The `{anthrocheckr}` package has functions that calculates these metrics. See [https://nutriverse.io/anthrocheckr](https://nutriverse.io/anthrocheckr)
+
+---
+
+## Assessing measurers performance - limitations as applied to EHA studies
+
+* animal subjects may be more challenging to obtain as compared to human subjects (although recruitment of human subjects for training is also challenging)
+
+* accuracy can be calculated as gold standard is available; however, for precision, setting standard for acceptable TEM will be needed
+
+---
+
+class: center, middle
+
+# Final questions?
+
+---
+
+class: center, middle
+
+# Thank you!
+
+Slides can be viewed at https://ecohealthalliance.github.io/dataquality or PDF version downloaded at https://ecohealthalliance.github.io/dataquality/dataquality.pdf
+
+R scripts for slides available at https://github.com/ecohealthalliance/dataquality
+
+
+
+
+
+
+

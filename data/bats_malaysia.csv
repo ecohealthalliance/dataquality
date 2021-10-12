@@ -1,0 +1,79 @@
+﻿id,site,date,species,trap,sex,stage,total_length,ear_length,tibia_length,hind_foot_length,tail_length,weight
+1,"Bukit Kesing Forest Reserve, Setiu",25-Oct-18,Balionycteris maculata,MN,F,J,47,11,18,8,9,12.8
+2,"Bukit Kesing Forest Reserve, Setiu",26-Oct-18,Cynopterus brachyotis,MN,M,A,60,14,22,13,12,28.8
+3,"Bukit Kesing Forest Reserve, Setiu",26-Oct-18,Cynopterus horsefieldii,MN,F,A,75,20,28,14,18,47.9
+4,"Bukit Kesing Forest Reserve, Setiu",26-Oct-18,Cynopterus brachyotis,MN,F,J,63,18,24,12,12,24.5
+5,"Bukit Kesing Forest Reserve, Setiu",16-Nov-18,Balionycteris maculata,MN,F,J,44,10,15,6,3,11.9
+6,"Bukit Kesing Forest Reserve, Setiu",16-Nov-18,Cynopterus horsefieldii,MN,F,A,71,21,29,16,18,49.3
+7,"Bukit Kesing Forest Reserve, Setiu",16-Nov-18,Cynopterus brachyotis,MN,M,A,64,16,24,10,11,31.7
+8,"Bukit Kesing Forest Reserve, Setiu",17-Nov-18,Cynopterus brachyotis,MN,F,A,64,19,21,11,11,28.2
+1,"Ladang Tayor TDM, Setiu",27-Oct-18,Cynopterus brachyotis,MN,M,A,62,17,22,10,10,26.9
+2,"Ladang Tayor TDM, Setiu",28-Oct-18,Rhinolopus convecus,HT,F,J,41,16,17,5,22,7.2
+3,"Ladang Tayor TDM, Setiu",30-Nov-18,Cynopterus brachyotis,HT,M,A,65,16,25,25,12,30.2
+4,"Ladang Tayor TDM, Setiu",30-Nov-18,Balionycteris maculata,MN,F,A,40,8,17,17,10,12.9
+5,"Ladang Tayor TDM, Setiu",30-Nov-18,Cynopterus brachyotis,MN,M,A,62,18,29,29,7,31
+6,"Ladang Tayor TDM, Setiu",01-Dec-18,Cynopterus brachyotis,MN,F,J,61,14,21,12,15,27.7
+7,"Ladang Tayor TDM, Setiu",01-Dec-18,Cynopterus brachyotis,MN,M,A,65,21,22,11,17,27.4
+8,"Ladang Tayor TDM, Setiu",01-Dec-18,Cynopterus brachyotis,MN,M,A,64,19,22,11,11,26.1
+9,"Ladang Tayor TDM, Setiu",01-Dec-18,Cynopterus brachyotis,MN,M,A,65,17,22,11,14,23.4
+10,"Ladang Tayor TDM, Setiu",01-Dec-18,Cynopterus brachyotis,MN,F,A,60,19,22,13,19,28.9
+11,"Ladang Tayor TDM, Setiu",16-Jan-19,Rhinolopus affinis,MN,M,A,52,17,24,9,26,15.1
+1,"Pengkalan Utama, Kenyir, Hulu Terengganu",02-Jan-19,Murina suilla,HT,M,A,30,12,15,6,32,3.3
+2,"Pengkalan Utama, Kenyir, Hulu Terengganu",03-Jan-19,Balionycteris maculata,MN,F,J,44,10,12,7,12,15.1
+3,"Pengkalan Utama, Kenyir, Hulu Terengganu",03-Jan-19,Balionycteris maculata,MN,F,A,48,13,16,8,5,14.7
+4,"Pengkalan Utama, Kenyir, Hulu Terengganu",03-Jan-19,Cynopterus horsefieldii,MN,M,A,74,18,29,10,13,53.2
+5,"Pengkalan Utama, Kenyir, Hulu Terengganu",03-Jan-19,Hipposideros bicolor,HT,F,A,44,14,19,7,22,6.3
+6,"Pengkalan Utama, Kenyir, Hulu Terengganu",03-Jan-19,Hipposideros bicolor,HT,F,A,44,16,21,6,23,6.2
+7,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,M,A,44,15,17,6,21,7.6
+8,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,F,A,44,16,17,6,22,6.7
+9,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,F,A,45,15,17,7,20,7.6
+10,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Kerivola pelucida,HT,F,A,31,13,17,8,45,4.4
+11,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,F,A,44,17,16,6,26,6.9
+12,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,F,A,42,15,17,6,22,5.7
+13,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,F,A,36,13,15,5,24,7.8
+14,"Pengkalan Utama, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros bicolor,HT,M,A,45,16,18,6,23,5.5
+15,"Pengkalan Utama, Kenyir, Hulu Terengganu",06-Jan-19,Hipposideros cervicus,HT,M,A,49,18,19,7,23,10
+16,"Pengkalan Utama, Kenyir, Hulu Terengganu",06-Jan-19,Hipposideros ater,HT,M,A,43,16,17,7,21,6.4
+17,"Pengkalan Utama, Kenyir, Hulu Terengganu",06-Jan-19,Hipposideros bicolor,HT,M,A,44,16,17,6,24,6.6
+18,"Pengkalan Utama, Kenyir, Hulu Terengganu",06-Jan-19,Cynopterus brachyotis,MN,M,J,60,17,22,11,11,27.1
+1,"Sungai Buweh, Kenyir, Hulu Terengganu",03-Jan-19,Balionycteris maculata,MN,F,J,42,9,16,7,5,10.9
+2,"Sungai Buweh, Kenyir, Hulu Terengganu",03-Jan-19,Hipposideros ater,HT,M,A,43,14,19,7,36,7.6
+3,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,F,A,44,15,18,7,24,6.5
+4,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,M,A,44,12,17,6,26,6.3
+5,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,F,A,44,17,17,5,23,6.1
+6,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,M,A,44,17,17,5,24,6.8
+7,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,F,A,44,16,16,5,22,6.1
+8,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,M,A,45,17,17,5,25,6.9
+9,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,F,A,45,19,17,5,24,6.3
+10,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros bicolor,HT,F,A,44,17,17,5,24,6.5
+11,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros ater,HT,M,A,43,17,17,6,23,6.5
+12,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros ater,HT,F,A,43,16,17,4,22,6.3
+13,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros galentus,HT,M,A,49,15,22,7,40,7.3
+14,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros larvatus,HT,M,A,60,17,24,9,30,18.5
+15,"Sungai Buweh, Kenyir, Hulu Terengganu",04-Jan-19,Hipposideros doriae,HT,M,A,37,15,17,5,26,3.4
+16,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,16,18,6,23,6.3
+17,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,17,17,6,22,6.3
+18,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,14,18,6,21,6.6
+19,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,16,19,7,25,8.7
+20,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,16,17,7,20,6.2
+21,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros ater,HT,M,A,43,16,18,6,23,6.3
+22,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,46,15,17,6,27,7
+23,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,F,A,46,16,17,6,21,6.8
+24,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,F,A,47,16,17,6,27,6.9
+25,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,45,16,17,6,26,6.5
+26,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,45,16,20,8,27,8
+27,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,44,14,18,7,22,6.4
+28,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,F,A,44,15,19,7,32,7.2
+29,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,F,A,47,17,18,6,23,7.9
+30,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,45,16,18,6,24,7.1
+31,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,45,16,18,6,22,8.2
+32,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hippposideros bicolor,HT,M,A,46,17,18,5,22,6.8
+33,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros galentus,HT,M,A,46,11,20,5,39,6.5
+34,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros galentus,HT,F,A,47,14,22,7,46,6.6
+35,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros doriae,HT,F,J,37,16,14,7,25,4.2
+36,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros cinerateus,HT,M,A,47,16,21,7,34,8.3
+37,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Hipposideros larvatus,HT,M,A,58,15,24,11,30,16.2
+38,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Rhinolopus convecus,HT,M,J,40,15,16,8,24,10.8
+39,"Sungai Buweh, Kenyir, Hulu Terengganu",05-Jan-19,Rhinolopus convecus,HT,F,A,43,16,16,7,22,6
+40,"Sungai Buweh, Kenyir, Hulu Terengganu",06-Jan-19,Rhinolopus convecus,HT,M,A,41,14,17,9,22,6.2
+41,"Sungai Buweh, Kenyir, Hulu Terengganu",06-Jan-19,Penthetor lucasi,MN,M,A,64,17,28,12,11,39.9

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Assessing and ensuring data quality of measurements</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ernest Guevarra" />
+    <meta name="date" content="2021-10-12" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: right, bottom, title-slide
+
+# Assessing and ensuring data quality of measurements
+### Ernest Guevarra
+### 12 October 2021
+
+---
+
+
+
+
+
+
+## Outline
+
+* Introduction
+
+* Common data quality issues related to measurements
+
+* Assessing/detecting quality issues with measurement data
+
+* Minimising quality issues with measurement data
+
+---
+
+## Introduction
+
+* Collecting measurement data is an important component of most EHA studies
+
+* Ensuring quality of measurement data is critical
+
+* There are many factors that impact on quality of measurement data
+
+* Detecting and/or minimising possible issues with measurement data can help with improving data quality
+
+---
+
+## Common reasons/factors that give rise to issues with measurement data
+
+* Errors in taking measurements (technique/method issues)
+
+* Errors in reading measurements (e.g., ruler-based measurements)
+
+* Errors in recording measurements and/or errors in encoding measurements
+
+---
+
+## Outlier detection
+
+* Compare against a range of possible/plausible measurement values
+
+* Extending the *boxplot* approach (univariate approach)
+
+* Using scatterplot and statistical distance (bivariate approach)
+
+---
+
+## Outlier detection examples/demonstration
+
+* For this, we will be using a dataset on bat forearm length available from:
+
+&gt; Penone, C., Kerbiriou, C., Julien, J. F., Marmet, J., &amp; Le Viol, I. (2018). Body size information in large-scale acoustic bat databases. PeerJ, 6, e5370. https://doi.org/10.7717/peerj.5370
+
+* We retrieve the data as follows:
+
+
+```r
+exdata1 &lt;- read.csv("data/peerj-06-5370-s003.csv", sep = ";") %&gt;% 
+  tibble() %&gt;%
+  select(Locality_id, Year, Sex, Age, Forearm_length_mm)
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - example dataset
+
+* And the dataset looks as follows:
+
+
+```r
+exdata1
+```
+
+```
+## # A tibble: 1,361 × 5
+##    Locality_id               Year Sex   Age   Forearm_length_mm
+##    &lt;chr&gt;                    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;
+##  1 44_MACHECOUL              2011 M     &lt;NA&gt;               32.1
+##  2 44_MACHECOUL              2011 M     &lt;NA&gt;               31  
+##  3 44_MACHECOUL              2011 M     &lt;NA&gt;               30.6
+##  4 44_MACHECOUL              2011 M     &lt;NA&gt;               32  
+##  5 22_SAINT-JACUT-DE-LA-MER  2009 F     &lt;NA&gt;               32.5
+##  6 22_SAINT-JACUT-DE-LA-MER  2009 F     &lt;NA&gt;               31.6
+##  7 22_SAINT-JACUT-DE-LA-MER  2009 F     &lt;NA&gt;               32.1
+##  8 22_SAINT-JACUT-DE-LA-MER  2009 F     &lt;NA&gt;               32.3
+##  9 22_SAINT-JACUT-DE-LA-MER  2009 F     &lt;NA&gt;               32.9
+## 10 56_SENE                   2009 M     &lt;NA&gt;               30.7
+## # … with 1,351 more rows
+```
+
+---
+
+## Outlier detection - checking ranges using `boxplot()`
+
+.pull-left[
+
+```r
+boxplot(
+  exdata1$Forearm_length_mm,
+  horizontal = TRUE,
+  xlab = "Forearm length (mm)", 
+  frame.plot = FALSE
+)
+```
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/exdata1_boxplot2-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Outlier detection - extending the `boxplot()` approach
+
+* We can extend the `boxplot()` approach to checking range using some functions from the `{nipnTK}` package (see [https://nutriverse.io/nipnTK](https://nutriverse.io/nipnTK))
+
+
+```r
+install.packages("nipnTK")
+```
+
+* `{nipnTK}` has a function called `outliersUV()` which builds on the techniques used when creating **boxplots**. The function can be used as follows:
+
+
+```r
+outliersUV(x = exdata1$Forearm_length_mm)
+```
+
+---
+
+## Outlier detection - extending the `boxplot()` approach
+
+And produces the following output
+
+
+```r
+outliersUV(x = exdata1$Forearm_length_mm)
+```
+
+```
+## 
+## Univariate outliers : Lower fence = 29.2, Upper fence = 34
+```
+
+```
+##    [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [15] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [29] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [43] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [57] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [71] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [99] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [113] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [127] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [141] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [155] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [169] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [183] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [197] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [211] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [225] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [239] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [253] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [267] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [281] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [295] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [309] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [323] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [337] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [351] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [365] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [379] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [393] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [407] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [421] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [435] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [449] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [463] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [477] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [491] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [505] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [519] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [533] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [547] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [561] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [575] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [589] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [603] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+##  [617] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [631] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [645] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [659] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [673] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [687] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [701] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [715] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [729] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [743] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [757] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [771] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [785] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [799] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [813] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [827] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [841] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [855] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [869] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [883] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [897] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [911] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [925] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [939] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [953] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [967] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [981] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [995] FALSE FALSE FALSE FALSE FALSE FALSE
+##  [ reached getOption("max.print") -- omitted 361 entries ]
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - extending the `boxplot()` approach
+
+This output can be used to identify the outlier rows of data as follows:
+
+
+```r
+exdata1[outliersUV(x = exdata1$Forearm_length_mm), ]
+```
+
+```
+## 
+## Univariate outliers : Lower fence = 29.2, Upper fence = 34
+```
+
+```
+## # A tibble: 16 × 5
+##    Locality_id                  Year Sex   Age   Forearm_length_mm
+##    &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;
+##  1 44_PORT-SAINT-PERE           2011 M     &lt;NA&gt;               28.8
+##  2 44_BONNOEUVRE                2011 F     &lt;NA&gt;               37.4
+##  3 35_LIEURON                   2012 M     &lt;NA&gt;               28.9
+##  4 35_LIEURON                   2012 M     &lt;NA&gt;               51.6
+##  5 44_SAINT-SULPICE-DES-LANDES  2011 F     &lt;NA&gt;               28  
+##  6 35_MONTAUBAN                 2012 M     &lt;NA&gt;               28  
+##  7 22_PLUMAUGAT                 2012 F     &lt;NA&gt;               35.2
+##  8 35_MARTIGNE-FERCHAUD         2010 M     &lt;NA&gt;               28.8
+##  9 72_BEAUMONT-PIED-DE-BOEUF    2011 M     Adult              28  
+## 10 22_SAINT-LAUNEUC             2009 F     &lt;NA&gt;               34.6
+## 11 78_GAMBAISEUIL               2010 F     Adult              42  
+## 12 22_LOC-ENVEL                 2009 F     Adult              35.5
+## 13 22_LOC-ENVEL                 2010 F     &lt;NA&gt;               34.5
+## 14 22_LOUARGAT                  2010 M     &lt;NA&gt;               27.6
+## 15 22_PLOUNEVEZ-QUINTIN         2010 F     &lt;NA&gt;               28.1
+## 16 54_HOUDREVILLE               2010 M     Adult              34.4
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - extending the `boxplot()` approach
+
+The `outliersUV()` function also allows for adjustments to the "fence" used in the `boxplot()` function to either make the detection of outliers more strict (narrower fence, less than 1.5 times the IQR) or more lax (wider fence more than 1.5 times the IQR). This can be done as follows:
+
+
+```r
+exdata1[outliersUV(x = exdata1$Forearm_length_mm, fence = 3), ]
+```
+
+```
+## 
+## Univariate outliers : Lower fence = 27.4, Upper fence = 35.8
+```
+
+```
+## # A tibble: 3 × 5
+##   Locality_id     Year Sex   Age   Forearm_length_mm
+##   &lt;chr&gt;          &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;
+## 1 44_BONNOEUVRE   2011 F     &lt;NA&gt;               37.4
+## 2 35_LIEURON      2012 M     &lt;NA&gt;               51.6
+## 3 78_GAMBAISEUIL  2010 F     Adult              42
+```
+
+---
+
+## Outlier detection - scatterplot and statistical distance
+
+* For this, we will be using bat morphological dataset taken from:
+
+&gt; Zakaria, N., Tarmizi, A. A., Zuki, M., Ahmad, A. B., Mamat, M. A., &amp; Abdullah, M. T. (2020). Bats data from fragmented forests in Terengganu State, Malaysia. Data in brief, 30, 105567. https://doi.org/10.1016/j.dib.2020.105567
+
+* We retrieve the data as follows:
+
+
+```r
+exdata2 &lt;- read.csv("data/bats_malaysia.csv") %&gt;% 
+  tibble()
+```
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Outlier detection - scatterplot and statistical distance
+
+* And the dataset looks as follows:
+
+
+```r
+exdata2
+```
+
+```
+## # A tibble: 78 × 13
+##       id site          date   species    trap  sex   stage total_length ear_length tibia_length
+##    &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;      &lt;int&gt;        &lt;int&gt;
+##  1     1 Bukit Kesing… 25-Oc… Balionyct… MN    F     J               47         11           18
+##  2     2 Bukit Kesing… 26-Oc… Cynopteru… MN    M     A               60         14           22
+##  3     3 Bukit Kesing… 26-Oc… Cynopteru… MN    F     A               75         20           28
+##  4     4 Bukit Kesing… 26-Oc… Cynopteru… MN    F     J               63         18           24
+##  5     5 Bukit Kesing… 16-No… Balionyct… MN    F     J               44         10           15
+##  6     6 Bukit Kesing… 16-No… Cynopteru… MN    F     A               71         21           29
+##  7     7 Bukit Kesing… 16-No… Cynopteru… MN    M     A               64         16           24
+##  8     8 Bukit Kesing… 17-No… Cynopteru… MN    F     A               64         19           21
+##  9     1 Ladang Tayor… 27-Oc… Cynopteru… MN    M     A               62         17           22
+## 10     2 Ladang Tayor… 28-Oc… Rhinolopu… HT    F     J               41         16           17
+## # … with 68 more rows, and 3 more variables: hind_foot_length &lt;int&gt;, tail_length &lt;int&gt;,
+## #   weight &lt;dbl&gt;
+```
+
+---
+
+## Outlier detection - scatterplot
+
+.pull-left[
+
+```r
+exdata2_hipposideros &lt;- exdata2 %&gt;%
+  filter(stringr::str_detect(
+    string = exdata2$species, 
+    pattern = "Hipposideros"))
+
+with(exdata2_hipposideros, 
+  plot(total_length, weight)
+)
+```
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Outlier detection - statistical distance
+
+
+```r
+exdata2_hipposideros %&gt;%
+  filter(outliersMD(total_length, weight))
+```
+
+```
+## # A tibble: 2 × 13
+##      id site           date   species    trap  sex   stage total_length ear_length tibia_length
+##   &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;      &lt;int&gt;        &lt;int&gt;
+## 1    13 Pengkalan Uta… 05-Ja… Hipposide… HT    F     A               36         13           15
+## 2    14 Sungai Buweh,… 04-Ja… Hipposide… HT    M     A               60         17           24
+## # … with 3 more variables: hind_foot_length &lt;int&gt;, tail_length &lt;int&gt;, weight &lt;dbl&gt;
+```
+
+---
+
+## Outlier detection - statistical distance
+
+.pull-left[
+
+```r
+with(exdata2_hipposideros,
+  plot(
+    x = total_length, 
+    y = weight,
+    pch = ifelse(
+      outliersMD(
+        total_length, 
+        weight), 19, 1)
+  )
+)
+```
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Outlier detection - statistical distance
+
+* The `outliersMD()` function has an argument called **alpha** which is set to 0.001 by default
+
+* With `alpha = 0.001` we are looking for records with values so extreme that we would expect to find them with a probability of 0.001 when there are no problems with the data
+
+* Another way of looking at the **alpha** parameter is that it alters the sensitivity of the `outlierMD()` function for detecting outliers by altering the threshold distance that is used to define outliers.
+
+* Larger values of **alpha** will tend to detect more potential outliers
+
+---
+
+class: center, middle
+
+# Questsions so far?
+
+---
+
+## Digit preference
+
+* observation that the final number in a measurement occurs with a greater frequency than is expected by chance
+
+* can occur because of rounding, the practice of increasing or decreasing the value in a measurement to the nearest whole of half unit, or because data is made up
+
+* common for field staff to round the first value after the decimal point to **0** or **5** or measurements in whole numbers are rounded to the nearest decade or half-decade
+
+* fictitious data often shows digit preference with **2** and **6** appearing as final digits more frequently than expected
+
+---
+
+## Digit preference - simulated example
+
+.pull-left[
+* We simulate a dataset of finalDigits of a measurement as follows:
+
+
+```r
+set.seed(0)
+finalDigits &lt;- sample(x = 0:9, size = 1000, replace = TRUE)
+```
+
+* Examine `finalDigits` as a table
+
+
+```r
+table(finalDigits)
+```
+
+```
+## finalDigits
+##   0   1   2   3   4   5   6   7   8   9 
+##  95  80  96 102 106  98 109  95 109 110
+```
+]
+
+.pull-right[
+* Examine `finalDigits` graphically
+
+![](index_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+]
+
+---
+
+background-image: url()
+background-color: #FFFFFF
+
+## Digit preference - statistical testing
+
+
+```r
+chisq.test(table(finalDigits))
+```
+
+```
+## 
+## 	Chi-squared test for given probabilities
+## 
+## data:  table(finalDigits)
+## X-squared = 7.72, df = 9, p-value = 0.5626
+```
+
+* No significant difference in the frequency of the last digits of the measurements
+
+* *False-positives* and *false-negatives* can arise when doing this statistical testing approach to detect digit preference. A small number of observations can lead to *false-negatives* while a large number of observations can lead to *false-positives*
+
+* This can be addressed using the **Digit Preference Score** or **DPS** and can be applied using the `digitPreference()` function in the `{nipnTK}` package
+
+---
+
+## Digit preference - digit preference score
+
+* Applying the `digitPreference()` function to the first example data on forearm length, we get:
+
+
+```r
+digitPreference(x = exdata1$Forearm_length_mm)
+```
+
+```
+## 
+## 	Digit Preference Score
+## 
+## data:	exdata1$Forearm_length_mm
+## Digit Preference Score (DPS) = 6.24 (Excellent)
+```
+
+---
+
+## Digit preference - digit preference score
+
+The **DPS** can also be plotted:
+
+.pull-left[
+
+```r
+plot(
+  digitPreference(
+    x = exdata1$Forearm_length_mm
+  )
+)
+```
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Digit preference - digit preference score
+
+* Applying the `digitPreference()` function to the second example dataset on total length, we get:
+
+
+```r
+digitPreference(x = exdata2$total_length, digits = 0)
+```
+
+```
+## 
+## 	Digit Preference Score
+## 
+## data:	exdata2$total_length
+## Digit Preference Score (DPS) = 23.47 (Problematic)
+```
+
+---
+
+## Digit preference - digit preference score
+
+* The **DPS** can also be plotted:
+
+.pull-left[
+
+```r
+plot(
+  digitPreference(
+    x = exdata2$total_length, 
+    digits = 0
+  )
+)
+```
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+]
+
+---
+
+class: center, middle
+
+# Questsions so far?
+
+---
+
+## Assessing measurers performance during training
+
+* Having measurers undergo standardisation exercises is common practice in health and nutrition sector
+
+* Measurers perform measurements on a minimum of 10 subjects twice and their measurements are assessed for *accuracy* and *precision*
+
+---
+
+## Assessing measurers performance - accuracy and precision
+
+* *Accuracy* is calculated against a gold standard which is either the measurements made by an expert or the mean of the measurements made by the entire cohort/group of measuerers being trained
+
+* *Precision* is calculated using the inter-observer technical error of measurement (TEM) metric proposed by Ulijaszek and Kerr in: 
+
+&gt; Ulijaszek, S., &amp; Kerr, D. (1999). Anthropometric measurement error and the assessment of nutritional status. British Journal of Nutrition, 82(3), 165-177. doi:10.1017/S0007114599001348
+
+* The `{anthrocheckr}` package has functions that calculates these metrics. See [https://nutriverse.io/anthrocheckr](https://nutriverse.io/anthrocheckr)
+
+---
+
+## Assessing measurers performance - limitations as applied to EHA studies
+
+* animal subjects may be more challenging to obtain as compared to human subjects (although recruitment of human subjects for training is also challenging)
+
+* accuracy can be calculated as gold standard is available; however, for precision, setting standard for acceptable TEM will be needed
+
+---
+
+class: center, middle
+
+# Final questions?
+
+---
+
+class: center, middle
+
+# Thank you!
+
+Slides can be viewed at https://ecohealthalliance.github.io/dataquality or PDF version downloaded at https://ecohealthalliance.github.io/dataquality/dataquality.pdf
+
+R scripts for slides available at https://github.com/ecohealthalliance/dataquality
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
